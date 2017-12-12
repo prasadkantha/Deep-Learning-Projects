@@ -1,3 +1,16 @@
+"""
+Creation Date: 18-12-2017
+Created By: Alok Kumar
+Dataset: Raw Text Dataset
+Data Source: https://github.com/bamtercelboo/cnn-lstm-bilstm-deepcnn-clstm-in-pytorch/tree/master/data
+Dataset Description: https://github.com/bamterlboo/cnn-lstm-bilstm-deepcnn-clstm-in-pytorch/blob/master/data/raw.clean.train
+Dataset File Count: 3
+Dataset Files: Text File
+Modelling Method: Deep Hybrid Model [Convolutional Neural Network (CNN) with Word2Vec (W2V)]
+Modelling Agenda: Sentiment Analysis
+Dependancies: Python, Numpy, Pandas, Genism and PyTorch.
+"""
+
 # Altering Hyperparameters:
 import torch
 import random
