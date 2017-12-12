@@ -14,3 +14,7 @@ This repository contains few of the projects that I have personally undertaken t
 
 5> Image Classifier | MNIST Dataset | Convolutional Neural Network (CNN) | TensorFlow
 
+6> Sentiment Classifier Model | Raw Text Data Scrapped | Deep CNN with Word2Vec | PyTorch
+
+7> 
+
