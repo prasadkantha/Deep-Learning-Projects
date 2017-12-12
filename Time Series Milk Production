@@ -1,1 +1,87 @@
+"""
+Creation Date: 03-12-2017
+Created By: Alok Kumar
+Dataset: Monthly milk production: pounds per cow (Jan 62 – Dec 75)
+Data Source: https://datamarket.com/data/set/22ox/monthly-milk-production-pounds-per-cow-jan-62-dec-75#!ds=22ox&display=line
+Dataset Description: Has milk production (Pounds per cow) and Time-frame (January'62 to December'75)
+Dataset File Count: 1
+Dataset Files: movies.dat (Holds list of movies), ratings.dat (Holds list of ratings for each movie) & users.dat (Holds list of all users who have rated movies)
+Modelling Method: Recurrent Neural Network (RNN)
+Modelling Agenda: To predict monthly milk prediction for an year (12 months/steps) with our RNN model.
+Dependancies: Python, Numpy, Pandas, Matplotlib & TensorFlow [Running on NVIDIA GPU]
+"""
 
+# Importing Libraries:
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import tensorflow as tf
+
+# Collecting Dataset:
+milk = pd.read_csv('monthly-milk-production.csv', index_col='Month')
+milk.index = pd.to_datetime(milk.index)
+
+# Splitting dataset:
+train_set = milk.head(156)
+test_set = milk.tail(12)
+
+# Feature Scaling:
+from sklearn.preprocessing import MinMaxScaler
+scaler = MinMaxScaler()
+train_scaled = scaler.fit_transform(train_set)
+test_scaled = scaler.transform(test_set)
+
+# Batch Function:
+def next_batch(training_data, batch_size, steps):
+    rand_start = np.random.randint(0, len(training_data)-steps)
+    y_batch = np.array(training_data[rand_start:rand_start + steps + 1]).reshape(1, steps+1)
+    return y_batch[:, :-1].reshape(-1, steps, 1), y_batch[:, 1:].reshape(-1, steps, 1)
+
+# Creating our RNN Model:
+num_inputs = 1
+num_time_steps = 12
+num_neurons = 100
+num_outputs = 1
+learning_rate = 0.03
+num_train_iterations = 5000
+batch_size = 1
+
+# Creating Placeholders:
+X = tf.placeholder(tf.float32, [None, num_time_steps, num_inputs])
+y = tf.placeholder(tf.float32, [None, num_time_steps, num_inputs])
+
+cell = tf.contrib.nn.OutputProjectionWrapper(tf.contrib.rnn.BasicLSTMCell(num_units=num_neurons, activation=tf.nn.relu), output_size=num_outputs))
+output, states = tf.nn.dynamic_rnn(cell, X, dtype=tf.float32)
+
+# Creating Loss Function & Optimizer: 
+loss = tf.reduce_mean(tf.square(outputs_y))
+optimizer = tf.train.AdamOptimizer(learning_rate = learning_rate)
+train = optimizer.minimize(loss)
+
+init = tf.global_variables_initializer()
+saver = tf.train.Saver()
+
+# Running & Saving Session:
+gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction = 0.9)
+with tf.Session() as sess:
+    sess.run(init)
+    for iteration in range(num_train_iterations):
+        X_batch, y_batch = next_batch(train_scaled, batch_size, num_time_steps)
+        sess.run(train, feed_dict={X:X_batch, y=y_batch})
+        if iteration%100 == 0:
+            mse = loss.eval(feed_dict= {X:X_batch, y:y_batch})
+            print(iteration, "\tMSE", mse)
+    saver.save(sess, "./ex_time_series_model_codealong")
+
+# Predicting future production of an year from saved session (Generative Session):
+with tf.Session() as sess:
+    saver.restore(sess, "./ex_time_series_model_codealong")
+    train_seed = list(train_scaled[-12: ])
+    for iteration in range(12):
+        X_batch = np.array(train_seed[-num_time_steps:]).reshape(1, num_time_steps-1)
+        y_pred = sess.run(outputs, feed_dict={X:X_batch})
+        train_seed.append(y_pred[0, -1, 0])
+
+results = scaler.inverse_transform(np.array(train_seed[12: ])).reshape(12, 1))
+test_set['Generated'] = results
+test_set.plot()
