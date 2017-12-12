@@ -7,6 +7,6 @@ This repository contains few of the projects that I have personally undertaken t
 2> Detecting & Classifying Fraudsters | Credit Approval Dataset | Artificial Neural Classifier (ANN) with Self Organizing Map (SOM) | Keras + MiniSOM 
    [Built an Unsupervised SOM to visualize Outliers who had applied for Credit Cards and then predict ptential users who would get involved in fraud as per the trend.]
 
-3> Predicting Milk Production over Time | Monthly milk production: pounds per cow (Jan 62 – Dec 75) | Recurrent Neural Network (RNN) | TensorFlow
+3> Predicting Milk Production over Time | Monthly milk production: pounds per cow (Jan 62 – Dec 75) | Recurrent Neural Network (RNN) | TensorFlow on GPU
    [Built a supervised RNN model to predict Milk production per cow (in pounds) for a time period of 12 months as per previous year trends.]
 
