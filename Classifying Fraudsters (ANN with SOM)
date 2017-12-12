@@ -1,3 +1,16 @@
+"""
+Creation Date: 10-12-2017
+Created By: Alok Kumar
+Dataset: Credit Approval Dataset
+Data Source: http://archive.ics.uci.edu/ml/datasets/credit+approval
+Dataset Description: Concerns credit card applications. with meaningless symbols for all attribute names and values to protect confidentiality of data. 
+Dataset File Count: 1
+Dataset Files: Credit_Card_Applications.csv (Multivariate with 15 attributes for 690 instances)
+Modelling Method: Deep Hybrid Model [Self Organizing Map (SOM) with Artificial Neural Network (ANN)]
+Modelling Agenda: To predict if a Credit card applicant is a potential fraudster or not.
+Dependancies: Python, Numpy, Pandas, Matplotlib, PyLab, Keras & MiniSOM.
+"""
+
 # PART 1: Creating SOM (Self Organizing Map):
 
 # Importing libraries: 
@@ -24,8 +37,7 @@ som = MiniSom(x = 10, y = 10, input_len = 15, sigma = 1.0, learning_rate = 0.5)
 som.random_weights_init(X)
 som.train_random(data = X, num_iteration = 100)
 
-# Visualizing results:
-from pylab import bone, pcolor, colorbar, plot, show
+# Visualizing results: 
 bone()
 pcolor(som.distance_map().T)
 colorbar()
