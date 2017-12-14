@@ -93,6 +93,7 @@ nb_epoch = 25
 for epoch in range(1, nb_epoch + 1):
     train_loss = 0
     s = 0.
+    
     for id_user in range(0, nb_users - batch_size, batch_size):
         vk = training_set[id_user:id_user+batch_size]
         v0 = training_set[id_user:id_user+batch_size]
