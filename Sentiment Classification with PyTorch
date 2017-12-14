@@ -1,8 +1,8 @@
 """
-Creation Date: 18-12-2017
+Creation Date: 13-12-2017
 Created By: Alok Kumar
 Dataset: Raw Text Dataset
-Data Source: https://github.com/bamtercelboo/cnn-lstm-bilstm-deepcnn-clstm-in-pytorch/tree/master/data
+Data Source: https://cnn-lstm-bilstm-deepcnn-clstm-in-pytorch/tree/master/data
 Dataset Description: https://github.com/bamterlboo/cnn-lstm-bilstm-deepcnn-clstm-in-pytorch/blob/master/data/raw.clean.train
 Dataset File Count: 3
 Dataset Files: Text File
@@ -377,7 +377,8 @@ def test_eval(data_iter, model, save_path, args, model_count):
     file.write("model_count {} \n".format(model_count))
     file.write("\n")
     file.close()
-    # calculate the best score in current file
+    
+    # calculate the best score in current file:
     resultlist = []
     if os.path.exists("./Test_Result.txt"):
         file = open("./Test_Result.txt")
@@ -391,6 +392,7 @@ def test_eval(data_iter, model, save_path, args, model_count):
         file.write("\n\n")
         file.close()
     shutil.copy("./Test_Result.txt", "./snapshot/" + args.mulu + "/Test_Result.txt")
+    
     # whether to delete the model after test acc to save space
     if os.path.isfile(save_path) and args.rm_model is True:
         os.remove(save_path)
