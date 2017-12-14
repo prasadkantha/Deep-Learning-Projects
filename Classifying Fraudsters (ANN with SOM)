@@ -12,7 +12,6 @@ Dependancies: Python, Numpy, Pandas, Matplotlib, PyLab, Keras & MiniSOM.
 """
 
 # PART 1: Creating SOM (Self Organizing Map):
-
 # Importing libraries: 
 import numpy as np
 import matplotlib.pyplot as plt
